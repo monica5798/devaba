@@ -16,7 +16,7 @@ pipeline {
         stage('Docker Build & Push') {
             steps {
                 script {
-                    def dockerImage = docker.build("yourdockerhubusername/myapp")
+                    def dockerImage = docker.build("monicas5/myapp")
                     docker.withRegistry('', 'docker-hub-credentials') {
                         dockerImage.push('latest')
                     }
@@ -27,12 +27,12 @@ pipeline {
 
     post {
         success {
-            mail to: 'your-email@example.com',
+            mail to: 'vvce22ise0099@vvce.ac.in',
                  subject: 'Jenkins Build Success: myapp',
                  body: "Build completed successfully!"
         }
         failure {
-            mail to: 'your-email@example.com',
+            mail to: 'vvce22ise0099@vvce.ac.in',
                  subject: 'Jenkins Build Failed: myapp',
                  body: "Build failed. Please check Jenkins logs."
         }
