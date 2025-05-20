@@ -2,39 +2,32 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9.9' // Define in Jenkins -> Global Tool Configuration
-        jdk 'JDK 17'         // Same here
+        maven 'M3'
+        jdk 'JDK17'
     }
 
     stages {
         stage('Build') {
             steps {
-                bat 'mvn clean package'
+                bat 'mvn clean install'
             }
         }
 
         stage('Docker Build & Push') {
             steps {
-                script {
-                    def dockerImage = docker.build("monicas5/myapp")
-                    docker.withRegistry('', 'docker-hub-credentials') {
-                        dockerImage.push('latest')
-                    }
-                }
+                bat 'docker build -t myapp .'
+                bat 'docker tag myapp:latest monicas5/myapp'
+                bat 'docker push monicas5/myapp:latest'
             }
         }
     }
 
     post {
-        success {
-            mail to: 'vvce22ise0099@vvce.ac.in',
-                 subject: 'Jenkins Build Success: myapp',
-                 body: "Build completed successfully!"
-        }
         failure {
-            mail to: 'vvce22ise0099@vvce.ac.in',
-                 subject: 'Jenkins Build Failed: myapp',
-                 body: "Build failed. Please check Jenkins logs."
+            // Optional: only include if SMTP is configured
+            // mail to: 'you@example.com',
+            //      subject: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+            //      body: "Build failed. Check Jenkins console for details."
         }
     }
 }
