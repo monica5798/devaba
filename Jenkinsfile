@@ -24,10 +24,9 @@ pipeline {
 
     post {
         failure {
-            // Optional: only include if SMTP is configured
-            // mail to: 'you@example.com',
-            //      subject: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-            //      body: "Build failed. Check Jenkins console for details."
+            mail to: 'vvce22ise0099@vvce.ac.in',
+                 subject: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
+                 body: "Build failed. Check Jenkins console for details."
         }
     }
 }
